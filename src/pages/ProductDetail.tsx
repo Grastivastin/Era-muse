@@ -18,7 +18,8 @@ export default function ProductDetail() {
     if (!id) return;
     supabase.from("products").select("*").eq("id", id).maybeSingle().then(({ data }) => {
       setP(data);
-      if (data?.available_modes?.[0]) setMode(data.available_modes[0]);
+      const m = data?.available_modes?.[0];
+      if (m === "borrow" || m === "try" || m === "buy") setMode(m);
     });
   }, [id]);
 
