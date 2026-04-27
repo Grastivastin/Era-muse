@@ -92,6 +92,36 @@ export type Database = {
           },
         ]
       }
+      era_moodboards: {
+        Row: {
+          created_at: string
+          id: string
+          image_queries: string[] | null
+          outfit_ideas: Json | null
+          prompt: string
+          session_id: string
+          vibe: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_queries?: string[] | null
+          outfit_ideas?: Json | null
+          prompt: string
+          session_id: string
+          vibe?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_queries?: string[] | null
+          outfit_ideas?: Json | null
+          prompt?: string
+          session_id?: string
+          vibe?: string | null
+        }
+        Relationships: []
+      }
       eras: {
         Row: {
           created_at: string
@@ -272,6 +302,7 @@ export type Database = {
           muse: string
           poem: string
           primary_aesthetic: string
+          recent_searches: string[] | null
           secondary_aesthetic: string | null
           session_id: string
           signature_pieces: string[]
@@ -283,6 +314,7 @@ export type Database = {
           muse: string
           poem: string
           primary_aesthetic: string
+          recent_searches?: string[] | null
           secondary_aesthetic?: string | null
           session_id: string
           signature_pieces?: string[]
@@ -294,6 +326,7 @@ export type Database = {
           muse?: string
           poem?: string
           primary_aesthetic?: string
+          recent_searches?: string[] | null
           secondary_aesthetic?: string | null
           session_id?: string
           signature_pieces?: string[]
