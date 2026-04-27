@@ -224,5 +224,4 @@
 @media (hover: hover) and (pointer: fine) {
   body.glitter-active { cursor: none; }
   body.glitter-active a, body.glitter-active button { cursor: none; }
-  }
 }
