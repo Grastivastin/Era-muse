@@ -1,10 +1,13 @@
 import Layout from "@/components/sash/Layout";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSash } from "@/context/SashContext";
 import { Button } from "@/components/ui/button";
-import { sashImg } from "@/lib/sash-images";
 import { Link } from "react-router-dom";
+import { toPng } from "html-to-image";
+import { toast } from "sonner";
+import { Download, Link2, Sparkles } from "lucide-react";
+import StyleDnaCard from "@/components/sash/StyleDnaCard";
 
 const QUIZ = [
   { q: "It's a Sunday morning. You're…", opts: [
@@ -83,25 +86,7 @@ export default function ForYou() {
   };
 
   if (result) {
-    return (
-      <Layout>
-        <section className="container py-16 max-w-2xl">
-          <div className="rounded-[2rem] gradient-haze p-1 shadow-soft">
-            <div className="bg-paper rounded-[1.85rem] p-10 space-y-6 text-center">
-              <p className="font-script text-2xl text-rose-dust">your style DNA</p>
-              <h1 className="font-display text-5xl text-ink capitalize">The {result.muse} Era</h1>
-              <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">primary aesthetic · <span className="capitalize">{result.primary_aesthetic}</span>{result.secondary_aesthetic && <> · secondary · <span className="capitalize">{result.secondary_aesthetic}</span></>}</p>
-              <p className="font-serif italic text-xl text-ink whitespace-pre-line text-balance">{result.poem}</p>
-              <div className="flex justify-center gap-3 pt-2">
-                <Button asChild className="rounded-full"><Link to="/aesthetics">Shop your world</Link></Button>
-                <Button variant="outline" onClick={begin} className="rounded-full">Retake</Button>
-              </div>
-              <p className="font-script text-xl text-rose-dust pt-4">— Sash &amp; Co</p>
-            </div>
-          </div>
-        </section>
-      </Layout>
-    );
+    return <ResultView result={result} sessionId={sessionId} onRetake={begin} />;
   }
 
   if (step === -1) {
@@ -129,6 +114,70 @@ export default function ForYou() {
               {o.label}
             </button>
           ))}
+        </div>
+      </section>
+    </Layout>
+  );
+}
+
+function ResultView({ result, sessionId, onRetake }: { result: any; sessionId: string; onRetake: () => void }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [busy, setBusy] = useState(false);
+
+  const downloadPng = async () => {
+    if (!cardRef.current) return;
+    setBusy(true);
+    try {
+      const dataUrl = await toPng(cardRef.current, {
+        pixelRatio: 3,
+        cacheBust: true,
+        backgroundColor: "transparent",
+      });
+      const link = document.createElement("a");
+      link.download = `sash-style-dna-${result.muse}.png`;
+      link.href = dataUrl;
+      link.click();
+      toast.success("Saved to your downloads, darling.");
+    } catch (e) {
+      toast.error("Couldn't capture the card. Try again.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const copyLink = async () => {
+    const url = `${window.location.origin}/dna/${sessionId}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link copied — share your era.");
+    } catch {
+      toast.error("Couldn't copy. Long-press the URL instead.");
+    }
+  };
+
+  return (
+    <Layout>
+      <section className="container py-12 max-w-xl space-y-6">
+        <div className="text-center space-y-1">
+          <p className="font-script text-3xl text-rose-dust">she's been decoded</p>
+          <h1 className="font-display text-4xl text-ink">Your Style DNA</h1>
+        </div>
+
+        <div ref={cardRef}>
+          <StyleDnaCard result={result} />
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-3 pt-2">
+          <Button onClick={downloadPng} disabled={busy} className="rounded-full">
+            <Download className="h-4 w-4 mr-2" /> {busy ? "capturing…" : "Download PNG"}
+          </Button>
+          <Button variant="outline" onClick={copyLink} className="rounded-full">
+            <Link2 className="h-4 w-4 mr-2" /> Copy share link
+          </Button>
+          <Button asChild variant="outline" className="rounded-full">
+            <Link to="/aesthetics"><Sparkles className="h-4 w-4 mr-2" /> Shop your world</Link>
+          </Button>
+          <Button variant="ghost" onClick={onRetake} className="rounded-full">Retake</Button>
         </div>
       </section>
     </Layout>

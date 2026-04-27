@@ -15,6 +15,7 @@ import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import SharedDna from "./pages/SharedDna";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/about" element={<About />} />
+            <Route path="/dna/:sessionId" element={<SharedDna />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
