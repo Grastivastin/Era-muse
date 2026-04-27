@@ -1,53 +1,163 @@
 import Layout from "@/components/sash/Layout";
-import { Link } from "react-router-dom";
-import hero from "@/assets/hero.jpg";
+import { Link, useNavigate } from "react-router-dom";
+import heroDream from "@/assets/hero-dreamscape.png";
+import kissesBg from "@/assets/kisses-bg.png";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { sashImg } from "@/lib/sash-images";
+import { useSash } from "@/context/SashContext";
+import { Sparkles, Heart, Wand2, Gem, Compass, Send } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Home() {
+  const navigate = useNavigate();
+  const { sessionId } = useSash();
   const [aesthetics, setAesthetics] = useState<any[]>([]);
   const [eras, setEras] = useState<any[]>([]);
+  const [eraInput, setEraInput] = useState("");
+  const [eraLoading, setEraLoading] = useState(false);
 
   useEffect(() => {
     supabase.from("aesthetics").select("*").order("display_order").then(({ data }) => setAesthetics(data || []));
     supabase.from("eras").select("*").order("display_order").then(({ data }) => setEras(data || []));
   }, []);
 
+  const submitEra = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = eraInput.trim();
+    if (!text || eraLoading) return;
+    setEraLoading(true);
+    try {
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/era-moodboard`;
+      const resp = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ prompt: text, session_id: sessionId }),
+      });
+      if (resp.status === 429) { toast.error("Sage is overwhelmed. Try again in a moment."); return; }
+      if (resp.status === 402) { toast.error("AI credits ran out. Add credits in Lovable settings."); return; }
+      if (!resp.ok) throw new Error("failed");
+      const data = await resp.json();
+      // Persist for /for-you to pick up
+      await supabase.from("era_moodboards").insert({
+        session_id: sessionId,
+        prompt: text,
+        vibe: data.vibe,
+        outfit_ideas: data.outfit_ideas,
+        image_queries: data.image_queries,
+      });
+      toast.success("your era has been decoded ✦");
+      navigate("/for-you");
+    } catch {
+      toast.error("Couldn't reach Sage. Try again.");
+    } finally {
+      setEraLoading(false);
+    }
+  };
+
   return (
     <Layout>
-      {/* HERO */}
-      <section className="relative min-h-[90vh] grid md:grid-cols-2 items-center overflow-hidden">
-        <div className="absolute inset-0 -z-10 gradient-haze opacity-40" />
-        <div className="container py-20 space-y-8 animate-petal-in">
-          <p className="font-script text-3xl text-rose-dust">welcome, darling</p>
-          <h1 className="font-display text-6xl md:text-8xl leading-[0.95] text-ink text-balance">
-            Dress<br/>Your Era.
+      {/* HERO — dreamscape with bleeding background, no black */}
+      <section className="relative min-h-[92vh] overflow-hidden flex items-center">
+        {/* Bleeding hero background */}
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            backgroundImage: `url(${heroDream})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        {/* Soft tint to bleed edges into the page (no black) */}
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, transparent 0%, transparent 35%, hsl(var(--blush)/0.55) 70%, hsl(var(--paper)/0.95) 100%)",
+          }}
+        />
+        {/* Extra kisses overlay just for the hero */}
+        <div
+          className="absolute inset-0 -z-10 pointer-events-none"
+          style={{
+            backgroundImage: `url(${kissesBg})`,
+            backgroundSize: "cover",
+            opacity: 0.18,
+            mixBlendMode: "multiply",
+          }}
+        />
+
+        {/* Cute fashion cartoons — randomly placed, away from text */}
+        <div aria-hidden className="absolute inset-0 pointer-events-none">
+          <span className="absolute top-[12%] left-[6%] text-5xl animate-float-slow opacity-70" style={{ animationDelay: "0s" }}>👗</span>
+          <span className="absolute top-[20%] right-[8%] text-4xl animate-float-slow opacity-70" style={{ animationDelay: "1.5s" }}>💋</span>
+          <span className="absolute bottom-[15%] left-[10%] text-4xl animate-float-slow opacity-70" style={{ animationDelay: "0.7s" }}>👜</span>
+          <span className="absolute bottom-[22%] right-[12%] text-5xl animate-float-slow opacity-70" style={{ animationDelay: "2.1s" }}>🌹</span>
+          <span className="absolute top-[8%] left-[42%] text-3xl animate-shimmer opacity-60" style={{ animationDelay: "0.5s" }}>✦</span>
+          <span className="absolute bottom-[10%] left-[48%] text-3xl animate-shimmer opacity-60" style={{ animationDelay: "1.2s" }}>✦</span>
+          <span className="absolute top-[35%] left-[3%] text-4xl animate-float-slow opacity-60" style={{ animationDelay: "1.8s" }}>👠</span>
+          <span className="absolute top-[40%] right-[4%] text-4xl animate-float-slow opacity-60" style={{ animationDelay: "0.3s" }}>🎀</span>
+        </div>
+
+        {/* Hero content */}
+        <div className="container relative z-10 text-center py-24 md:py-32 space-y-6 animate-petal-in">
+          <p className="font-script text-3xl md:text-4xl text-rose-dust">welcome, darling ♡</p>
+          <h1 className="font-display text-7xl md:text-9xl leading-[0.9] text-ink font-bold drop-shadow-md" style={{ textShadow: "0 2px 20px hsl(var(--paper)/0.6), 0 1px 2px hsl(var(--ink)/0.15)" }}>
+            Sash<span className="text-rose-dust">&amp;</span>Co
           </h1>
-          <p className="font-serif italic text-2xl text-ink-soft max-w-md text-balance">
+          <p className="font-display text-2xl md:text-3xl text-ink font-medium tracking-wide" style={{ textShadow: "0 1px 8px hsl(var(--paper)/0.7)" }}>
+            Dress Your Era
+          </p>
+          <p className="font-serif italic text-xl md:text-2xl text-ink-soft max-w-xl mx-auto pt-2 text-balance" style={{ textShadow: "0 1px 4px hsl(var(--paper)/0.7)" }}>
             Where your aesthetic lives. Borrow it. Try it. Buy it. Become her.
           </p>
-          <div className="flex flex-wrap gap-4 pt-4">
-            <Button asChild size="lg" className="rounded-full px-8 py-6 text-base">
-              <Link to="/for-you">Find your era</Link>
+          <div className="flex flex-wrap justify-center gap-4 pt-4">
+            <Button asChild size="lg" className="rounded-full px-8 py-6 text-base shadow-soft">
+              <Link to="/for-you"><Sparkles className="h-4 w-4 mr-2" /> Find your era</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-full px-8 py-6 text-base border-ink/20">
+            <Button asChild variant="outline" size="lg" className="rounded-full px-8 py-6 text-base border-ink/30 bg-paper/60 backdrop-blur-sm">
               <Link to="/aesthetics">Browse aesthetics</Link>
             </Button>
           </div>
         </div>
-        <div className="relative h-[60vh] md:h-[90vh]">
-          <img src={hero} alt="A young woman in soft pastel romantic editorial portrait" className="w-full h-full object-cover photo-haze" width={1080} height={1920} />
-          <div className="absolute inset-0 gradient-dawn opacity-20 mix-blend-soft-light" />
+      </section>
+
+      {/* ABOUT SASH & CO — what makes us different */}
+      <section className="container py-24 space-y-12">
+        <div className="text-center space-y-3 max-w-3xl mx-auto">
+          <p className="font-script text-3xl text-rose-dust">why we exist</p>
+          <h2 className="font-display text-5xl md:text-6xl text-ink font-bold">About Sash<span className="text-rose-dust">&amp;</span>Co</h2>
+          <p className="font-serif italic text-xl text-ink-soft text-balance pt-2">
+            We're not a clothing store. We're a wardrobe of <em>selves</em>.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { icon: Heart, title: "Shop by feeling", text: "Other sites sort by category. We sort by mood, muse, and era — the way you actually get dressed." },
+            { icon: Wand2, title: "AI stylist Sage", text: "A poetic in-house stylist who reads your vibe and picks the dress. No algorithmic noise." },
+            { icon: Gem, title: "Borrow · Try · Buy", text: "Don't own every era. Borrow it for a week, try a styled box, or buy the one that's truly you." },
+            { icon: Compass, title: "Twelve worlds", text: "Eighteen aesthetics, four muse-led eras. Curated, not catalogued. Soft, not stocky." },
+          ].map((c) => (
+            <div key={c.title} className="bg-paper/80 backdrop-blur-sm rounded-3xl p-6 shadow-petal border border-border hover-lift">
+              <c.icon className="h-7 w-7 text-rose-dust mb-3" />
+              <h3 className="font-display text-2xl text-ink font-bold">{c.title}</h3>
+              <p className="font-serif italic text-ink-soft pt-2 text-base leading-relaxed">{c.text}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* AESTHETICS */}
-      <section className="container py-24 space-y-12">
+      {/* AESTHETICS preview */}
+      <section className="container py-16 space-y-12">
         <div className="text-center space-y-3">
-          <p className="font-script text-2xl text-rose-dust">twelve worlds</p>
-          <h2 className="font-display text-5xl text-ink">Choose your aesthetic.</h2>
+          <p className="font-script text-2xl text-rose-dust">eighteen worlds</p>
+          <h2 className="font-display text-5xl text-ink font-bold">Choose your aesthetic.</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {aesthetics.slice(0, 8).map(a => (
@@ -56,38 +166,66 @@ export default function Home() {
                 <img src={sashImg(a.image_url)} alt={a.name} className="w-full h-full object-cover photo-haze transition-transform duration-700 group-hover:scale-105" loading="lazy" />
               </div>
               <div className="pt-4 text-center">
-                <h3 className="font-display text-xl text-ink">{a.name}</h3>
-                <p className="font-script text-lg text-ink-soft">{a.tagline}</p>
+                <h3 className="font-display text-xl text-ink font-bold">{a.name}</h3>
+                <p className="font-script text-lg text-rose-dust">{a.tagline}</p>
               </div>
             </Link>
           ))}
         </div>
         <div className="text-center">
           <Button asChild variant="outline" className="rounded-full">
-            <Link to="/aesthetics">All twelve →</Link>
+            <Link to="/aesthetics">All eighteen →</Link>
           </Button>
         </div>
       </section>
 
-      {/* ERAS */}
-      <section className="gradient-dusk py-24">
-        <div className="container space-y-12">
+      {/* STEP INTO AN ERA — now an AI input */}
+      <section className="gradient-dusk py-24 relative overflow-hidden">
+        <div
+          className="absolute inset-0 pointer-events-none opacity-30 sparkle-overlay"
+          aria-hidden
+        />
+        <div className="container relative space-y-10 max-w-3xl">
           <div className="text-center space-y-3">
-            <p className="font-script text-2xl text-rose-dust">muse-led collections</p>
-            <h2 className="font-display text-5xl text-ink">Step into an era.</h2>
+            <p className="font-script text-3xl text-rose-dust">tell me everything</p>
+            <h2 className="font-display text-5xl md:text-6xl text-ink font-bold text-balance">
+              what's your era right now, honey?
+            </h2>
+            <p className="font-serif italic text-xl text-ink-soft text-balance">
+              Type a feeling, a song, a place, a girl you want to be. Sage will pull a moodboard.
+            </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <form onSubmit={submitEra} className="flex flex-col sm:flex-row gap-3 bg-paper/80 backdrop-blur-md p-3 rounded-full shadow-soft border border-border">
+            <Input
+              value={eraInput}
+              onChange={(e) => setEraInput(e.target.value)}
+              placeholder="lana del rey driving at midnight…   |   90s skater girl…   |   regency baddie…"
+              className="rounded-full bg-transparent border-0 text-base px-6 focus-visible:ring-0"
+              disabled={eraLoading}
+            />
+            <Button type="submit" disabled={eraLoading || !eraInput.trim()} className="rounded-full px-6">
+              {eraLoading ? "decoding…" : (<><Send className="h-4 w-4 mr-2" /> pull my moodboard</>)}
+            </Button>
+          </form>
+
+          {/* Era cards underneath as inspiration */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 pt-6">
             {eras.map(e => (
-              <Link key={e.id} to="/for-you" className="group hover-lift block bg-paper rounded-3xl overflow-hidden shadow-petal">
-                <div className="aspect-[3/4] overflow-hidden">
+              <button
+                key={e.id}
+                onClick={() => setEraInput(`${e.muse} — ${e.tagline}`)}
+                className="group hover-lift block bg-paper/70 backdrop-blur-sm rounded-3xl overflow-hidden shadow-petal text-left"
+              >
+                <div className="aspect-[4/5] overflow-hidden">
                   <img src={sashImg(e.image_url)} alt={e.name} className="w-full h-full object-cover photo-haze-warm transition-transform duration-700 group-hover:scale-105" loading="lazy" />
                 </div>
-                <div className="p-6 space-y-2">
-                  <p className="text-xs uppercase tracking-[0.3em] text-ink-soft">{e.decade}</p>
-                  <h3 className="font-display text-2xl text-ink">{e.name}</h3>
-                  <p className="font-serif italic text-ink-soft">{e.tagline}</p>
+                <div className="p-4 space-y-1">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft">{e.decade}</p>
+                  <h3 className="font-display text-xl text-ink font-bold">{e.name}</h3>
+                  <p className="font-serif italic text-sm text-ink-soft">{e.tagline}</p>
                 </div>
-              </Link>
+              </button>
             ))}
           </div>
         </div>
@@ -96,7 +234,7 @@ export default function Home() {
       {/* CTA */}
       <section className="container py-32 text-center space-y-6">
         <p className="font-script text-2xl text-rose-dust">don't know your era yet?</p>
-        <h2 className="font-display text-5xl text-ink max-w-2xl mx-auto text-balance">Take the Style DNA quiz.</h2>
+        <h2 className="font-display text-5xl text-ink font-bold max-w-2xl mx-auto text-balance">Take the Style DNA quiz.</h2>
         <p className="font-serif italic text-xl text-ink-soft max-w-xl mx-auto">A few soft questions. One result you'll want to screenshot.</p>
         <Button asChild size="lg" className="rounded-full px-10 py-6 mt-4">
           <Link to="/for-you">Begin →</Link>
