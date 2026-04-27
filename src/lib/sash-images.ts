@@ -61,4 +61,4 @@ export const SASH_IMAGES: Record<string, string> = {
 };
 
 export const sashImg = (key: string | null | undefined) =>
-  (key && SASH_IMAGES[key]) || hero;
+  (key && (key.startsWith("http") || key.startsWith("/") ? key : SASH_IMAGES[key])) || hero;
