@@ -14,7 +14,336 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      aesthetics: {
+        Row: {
+          created_at: string
+          description: string
+          display_order: number
+          id: string
+          image_url: string | null
+          mood_words: string[]
+          name: string
+          palette: string[]
+          tagline: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          display_order?: number
+          id: string
+          image_url?: string | null
+          mood_words?: string[]
+          name: string
+          palette?: string[]
+          tagline: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          mood_words?: string[]
+          name?: string
+          palette?: string[]
+          tagline?: string
+        }
+        Relationships: []
+      }
+      cart_items: {
+        Row: {
+          added_at: string
+          id: string
+          mode: string
+          product_id: string
+          quantity: number
+          session_id: string
+        }
+        Insert: {
+          added_at?: string
+          id?: string
+          mode: string
+          product_id: string
+          quantity?: number
+          session_id: string
+        }
+        Update: {
+          added_at?: string
+          id?: string
+          mode?: string
+          product_id?: string
+          quantity?: number
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cart_items_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eras: {
+        Row: {
+          created_at: string
+          decade: string
+          description: string
+          display_order: number
+          id: string
+          image_url: string | null
+          manifesto: string
+          muse: string
+          name: string
+          palette: string[]
+          tagline: string
+        }
+        Insert: {
+          created_at?: string
+          decade: string
+          description: string
+          display_order?: number
+          id: string
+          image_url?: string | null
+          manifesto: string
+          muse: string
+          name: string
+          palette?: string[]
+          tagline: string
+        }
+        Update: {
+          created_at?: string
+          decade?: string
+          description?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          manifesto?: string
+          muse?: string
+          name?: string
+          palette?: string[]
+          tagline?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          aesthetic_id: string | null
+          available_modes: string[]
+          borrow_price: number | null
+          buy_price: number | null
+          category: string
+          created_at: string
+          description: string
+          era_id: string | null
+          id: string
+          image_url: string
+          name: string
+          slug: string
+          story: string | null
+          tags: string[]
+          try_price: number | null
+        }
+        Insert: {
+          aesthetic_id?: string | null
+          available_modes?: string[]
+          borrow_price?: number | null
+          buy_price?: number | null
+          category: string
+          created_at?: string
+          description: string
+          era_id?: string | null
+          id?: string
+          image_url: string
+          name: string
+          slug: string
+          story?: string | null
+          tags?: string[]
+          try_price?: number | null
+        }
+        Update: {
+          aesthetic_id?: string | null
+          available_modes?: string[]
+          borrow_price?: number | null
+          buy_price?: number | null
+          category?: string
+          created_at?: string
+          description?: string
+          era_id?: string | null
+          id?: string
+          image_url?: string
+          name?: string
+          slug?: string
+          story?: string | null
+          tags?: string[]
+          try_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_aesthetic_id_fkey"
+            columns: ["aesthetic_id"]
+            isOneToOne: false
+            referencedRelation: "aesthetics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_era_id_fkey"
+            columns: ["era_id"]
+            isOneToOne: false
+            referencedRelation: "eras"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sage_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          session_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          session_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sage_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sessions: {
+        Row: {
+          created_at: string
+          id: string
+          selected_era: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          selected_era?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          selected_era?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_selected_era_fkey"
+            columns: ["selected_era"]
+            isOneToOne: false
+            referencedRelation: "eras"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      style_dna: {
+        Row: {
+          answers: Json
+          created_at: string
+          era: string
+          muse: string
+          poem: string
+          primary_aesthetic: string
+          secondary_aesthetic: string | null
+          session_id: string
+          signature_pieces: string[]
+        }
+        Insert: {
+          answers?: Json
+          created_at?: string
+          era: string
+          muse: string
+          poem: string
+          primary_aesthetic: string
+          secondary_aesthetic?: string | null
+          session_id: string
+          signature_pieces?: string[]
+        }
+        Update: {
+          answers?: Json
+          created_at?: string
+          era?: string
+          muse?: string
+          poem?: string
+          primary_aesthetic?: string
+          secondary_aesthetic?: string | null
+          session_id?: string
+          signature_pieces?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "style_dna_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: true
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wishlist_items: {
+        Row: {
+          added_at: string
+          id: string
+          product_id: string
+          session_id: string
+        }
+        Insert: {
+          added_at?: string
+          id?: string
+          product_id: string
+          session_id: string
+        }
+        Update: {
+          added_at?: string
+          id?: string
+          product_id?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wishlist_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wishlist_items_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
