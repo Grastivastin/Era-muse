@@ -5,12 +5,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SashProvider } from "@/context/SashContext";
 import GlitterCursor from "@/components/sash/GlitterCursor";
+import SageWidget from "@/components/sash/SageWidget";
 import Home from "./pages/Home";
 import Aesthetics from "./pages/Aesthetics";
 import AestheticDetail from "./pages/AestheticDetail";
 import ForYou from "./pages/ForYou";
 import ProductDetail from "./pages/ProductDetail";
-import Stylist from "./pages/Stylist";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
 import About from "./pages/About";
@@ -27,13 +27,13 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <GlitterCursor />
+          <SageWidget />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/aesthetics" element={<Aesthetics />} />
             <Route path="/aesthetics/:id" element={<AestheticDetail />} />
             <Route path="/for-you" element={<ForYou />} />
             <Route path="/products/:id" element={<ProductDetail />} />
-            <Route path="/stylist" element={<Stylist />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/about" element={<About />} />
