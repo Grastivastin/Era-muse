@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { Download, Link2, Sparkles, Send, RefreshCcw } from "lucide-react";
 import StyleDnaCard from "@/components/sash/StyleDnaCard";
 import { sashImg } from "@/lib/sash-images";
+import StickerCutout from "@/components/sash/StickerCutout";
+import stickerBlondeBow from "@/assets/sticker-blonde-bow.png";
 
 const QUIZ = [
   { q: "It's a Sunday morning. You're…", opts: [
@@ -158,18 +160,27 @@ export default function ForYou() {
   return (
     <Layout>
       <section className="container py-12 md:py-16 space-y-12">
-        {/* Header */}
-        <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <p className="font-script text-3xl text-rose-dust">curated, just for you</p>
-          <h1 className="font-display text-5xl md:text-6xl text-ink font-bold">For You.</h1>
-          <p className="font-serif italic text-xl text-ink-soft text-balance">
-            Everything below is shaped by your era, your DNA, and the moods you've whispered to Sage.
-          </p>
+        {/* Header with pasted-art sticker */}
+        <div className="relative max-w-3xl mx-auto">
+          <StickerCutout
+            src={stickerBlondeBow}
+            alt="Blonde in pink bow dress sketch sticker"
+            rotate={-9}
+            borderWidth="thick"
+            className="hidden sm:block absolute -left-4 md:-left-12 -top-6 w-32 md:w-44 h-auto"
+          />
+          <div className="text-center space-y-3 px-2">
+            <p className="font-script text-3xl text-rose-dust text-outlined-ink">curated, just for you</p>
+            <h1 className="font-display text-5xl md:text-6xl text-ink font-bold">For You.</h1>
+            <p className="font-serif italic text-xl text-ink-soft text-balance">
+              Everything below is shaped by your era, your DNA, and the moods you've whispered to Sage.
+            </p>
+          </div>
         </div>
 
         {/* Era input */}
         <div className="max-w-3xl mx-auto bg-paper/85 backdrop-blur-md rounded-3xl p-6 shadow-petal border border-border space-y-3">
-          <p className="font-script text-2xl text-rose-dust text-center">what's your era right now, honey?</p>
+          <p className="font-script text-2xl text-rose-dust text-outlined-ink text-center">what's your era right now, honey?</p>
           <form onSubmit={submitEra} className="flex flex-col sm:flex-row gap-2">
             <Input
               value={eraInput}
