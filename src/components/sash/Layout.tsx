@@ -25,13 +25,14 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Link>
           <nav className="hidden md:flex gap-8 text-sm uppercase tracking-[0.2em] text-ink font-medium">
             {[
+              ["/", "Home"],
               ["/aesthetics", "Aesthetics"],
               ["/for-you", "For You"],
               ["/wishlist", "Wishlist"],
               ["/cart", "Cart"],
               ["/about", "Manifesto"],
             ].map(([to, label]) => (
-              <NavLink key={to} to={to} className={({ isActive }) =>
+              <NavLink key={to} to={to} end={to === "/"} className={({ isActive }) =>
                 `story-link ${isActive ? "text-ink" : ""}`}>{label}</NavLink>
             ))}
           </nav>

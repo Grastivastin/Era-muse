@@ -154,6 +154,15 @@
     color: hsl(var(--rose-dust));
     text-shadow: 0 1px 0 hsl(var(--paper) / 0.7), 0 0 12px hsl(var(--rose-dust) / 0.25);
     font-weight: 600;
+    -webkit-text-stroke: 0.5px hsl(var(--ink));
+    paint-order: stroke fill;
+  }
+
+  /* Outlined ink stroke for any heading that needs to read over busy backgrounds */
+  .text-outlined-ink {
+    -webkit-text-stroke: 0.7px hsl(var(--ink));
+    paint-order: stroke fill;
+    text-shadow: 0 1px 0 hsl(var(--paper) / 0.85);
   }
 
   /* Aesthetic decorative border — soft scallops */
