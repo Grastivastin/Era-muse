@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SashProvider } from "@/context/SashContext";
 import GlitterCursor from "@/components/sash/GlitterCursor";
 import SageWidget from "@/components/sash/SageWidget";
+import ScrollToTop from "@/components/sash/ScrollToTop";
 import Home from "./pages/Home";
 import Aesthetics from "./pages/Aesthetics";
 import AestheticDetail from "./pages/AestheticDetail";
@@ -28,6 +29,7 @@ const App = () => (
         <BrowserRouter>
           <GlitterCursor />
           <SageWidget />
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/aesthetics" element={<Aesthetics />} />

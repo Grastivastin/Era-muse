@@ -62,67 +62,57 @@ export default function Home() {
 
   return (
     <Layout>
-      {/* HERO — dreamscape with bleeding background, no black */}
-      <section className="relative min-h-[92vh] overflow-hidden flex items-center">
-        {/* Bleeding hero background */}
+      {/* HERO — clean two-column, no clash with the dreamscape's baked-in text */}
+      <section className="relative overflow-hidden">
+        {/* soft rose wash backdrop (no big image bleed) */}
         <div
-          className="absolute inset-0 -z-10"
-          style={{
-            backgroundImage: `url(${heroDream})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        {/* Soft tint to bleed edges into the page (no black) */}
-        <div
+          aria-hidden
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(ellipse at center, transparent 0%, transparent 35%, hsl(var(--blush)/0.55) 70%, hsl(var(--paper)/0.95) 100%)",
+              "radial-gradient(ellipse at 30% 20%, hsl(var(--blush)/0.7), transparent 55%), radial-gradient(ellipse at 80% 80%, hsl(var(--rose-dust)/0.25), transparent 60%), hsl(var(--paper))",
           }}
         />
-        {/* Extra kisses overlay just for the hero */}
-        <div
-          className="absolute inset-0 -z-10 pointer-events-none"
-          style={{
-            backgroundImage: `url(${kissesBg})`,
-            backgroundSize: "cover",
-            opacity: 0.18,
-            mixBlendMode: "multiply",
-          }}
-        />
+        <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none" style={{ backgroundImage: `url(${kissesBg})`, backgroundSize: "cover", opacity: 0.35, mixBlendMode: "multiply" }} />
 
-        {/* Cute fashion cartoons — randomly placed, away from text */}
+        {/* floating fashion glyphs at the edges only */}
         <div aria-hidden className="absolute inset-0 pointer-events-none">
-          <span className="absolute top-[12%] left-[6%] text-5xl animate-float-slow opacity-70" style={{ animationDelay: "0s" }}>👗</span>
-          <span className="absolute top-[20%] right-[8%] text-4xl animate-float-slow opacity-70" style={{ animationDelay: "1.5s" }}>💋</span>
-          <span className="absolute bottom-[15%] left-[10%] text-4xl animate-float-slow opacity-70" style={{ animationDelay: "0.7s" }}>👜</span>
-          <span className="absolute bottom-[22%] right-[12%] text-5xl animate-float-slow opacity-70" style={{ animationDelay: "2.1s" }}>🌹</span>
-          <span className="absolute top-[8%] left-[42%] text-3xl animate-shimmer opacity-60" style={{ animationDelay: "0.5s" }}>✦</span>
-          <span className="absolute bottom-[10%] left-[48%] text-3xl animate-shimmer opacity-60" style={{ animationDelay: "1.2s" }}>✦</span>
-          <span className="absolute top-[35%] left-[3%] text-4xl animate-float-slow opacity-60" style={{ animationDelay: "1.8s" }}>👠</span>
-          <span className="absolute top-[40%] right-[4%] text-4xl animate-float-slow opacity-60" style={{ animationDelay: "0.3s" }}>🎀</span>
+          <span className="absolute top-[8%] left-[3%] text-4xl animate-float-slow opacity-70">👗</span>
+          <span className="absolute bottom-[12%] left-[5%] text-3xl animate-float-slow opacity-60" style={{ animationDelay: "1.2s" }}>👠</span>
+          <span className="absolute top-[10%] right-[3%] text-4xl animate-float-slow opacity-70" style={{ animationDelay: "0.8s" }}>🎀</span>
+          <span className="absolute bottom-[10%] right-[4%] text-4xl animate-float-slow opacity-60" style={{ animationDelay: "1.8s" }}>🌹</span>
         </div>
 
-        {/* Hero content */}
-        <div className="container relative z-10 text-center py-24 md:py-32 space-y-6 animate-petal-in">
-          <p className="font-script text-3xl md:text-4xl text-rose-dust">welcome, darling ♡</p>
-          <h1 className="font-display text-7xl md:text-9xl leading-[0.9] text-ink font-bold drop-shadow-md" style={{ textShadow: "0 2px 20px hsl(var(--paper)/0.6), 0 1px 2px hsl(var(--ink)/0.15)" }}>
-            Sash<span className="text-rose-dust">&amp;</span>Co
-          </h1>
-          <p className="font-display text-2xl md:text-3xl text-ink font-medium tracking-wide" style={{ textShadow: "0 1px 8px hsl(var(--paper)/0.7)" }}>
-            Dress Your Era
-          </p>
-          <p className="font-serif italic text-xl md:text-2xl text-ink-soft max-w-xl mx-auto pt-2 text-balance" style={{ textShadow: "0 1px 4px hsl(var(--paper)/0.7)" }}>
-            Where your aesthetic lives. Borrow it. Try it. Buy it. Become her.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 pt-4">
-            <Button asChild size="lg" className="rounded-full px-8 py-6 text-base shadow-soft">
-              <Link to="/for-you"><Sparkles className="h-4 w-4 mr-2" /> Find your era</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-full px-8 py-6 text-base border-ink/30 bg-paper/60 backdrop-blur-sm">
-              <Link to="/aesthetics">Browse aesthetics</Link>
-            </Button>
+        <div className="container relative z-10 grid lg:grid-cols-2 gap-12 items-center py-20 md:py-28">
+          {/* LEFT — text */}
+          <div className="space-y-6 animate-petal-in text-center lg:text-left">
+            <p className="font-script text-3xl md:text-4xl text-rose-dust">welcome, darling ♡</p>
+            <h1 className="font-display text-7xl md:text-8xl leading-[0.9] text-ink font-bold">
+              Sash<span className="text-rose-dust">&amp;</span>Co
+            </h1>
+            <p className="font-display text-2xl md:text-3xl text-ink font-semibold tracking-wide">
+              Dress Your Era
+            </p>
+            <p className="font-serif italic text-lg md:text-xl text-ink-soft max-w-md mx-auto lg:mx-0 text-balance">
+              Where your aesthetic lives. Borrow it. Try it. Buy it. Become her.
+            </p>
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
+              <Button asChild size="lg" className="rounded-full px-8 py-6 text-base shadow-soft">
+                <Link to="/for-you"><Sparkles className="h-4 w-4 mr-2" /> Find your era</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-full px-8 py-6 text-base border-ink/30 bg-paper/70 backdrop-blur-sm">
+                <Link to="/aesthetics">Browse aesthetics</Link>
+              </Button>
+            </div>
+          </div>
+
+          {/* RIGHT — framed dreamscape, kept small so its baked-in text doesn't clash */}
+          <div className="relative mx-auto w-full max-w-md">
+            <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-soft border border-border bg-cream">
+              <img src={heroDream} alt="A dreamscape mood" className="w-full h-full object-cover photo-haze" />
+            </div>
+            <span className="absolute -top-4 -right-4 text-3xl animate-shimmer">✦</span>
+            <span className="absolute -bottom-4 -left-4 text-3xl animate-shimmer" style={{ animationDelay: "0.7s" }}>✦</span>
           </div>
         </div>
       </section>
