@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "repeat",
-          opacity: 0.22,
+          opacity: 0.42,
           mixBlendMode: "multiply",
         }}
       />
