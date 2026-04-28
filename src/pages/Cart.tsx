@@ -8,6 +8,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Heart, Trash2, Minus, Plus } from "lucide-react";
+import StickerCutout from "@/components/sash/StickerCutout";
+import stickerRuffleGown from "@/assets/sticker-ruffle-gown.png";
 
 type Mode = "borrow" | "try" | "buy";
 
@@ -107,9 +109,18 @@ export default function Cart() {
 
   return (
     <Layout>
-      <section className="container py-16 text-center space-y-2">
-        <p className="font-script text-2xl text-rose-dust">almost yours</p>
-        <h1 className="font-display text-5xl text-ink">Your Cart</h1>
+      <section className="container py-16 relative">
+        <StickerCutout
+          src={stickerRuffleGown}
+          alt="Pink ruffle ball gown sketch sticker"
+          rotate={6}
+          borderWidth="thin"
+          className="hidden sm:block absolute right-4 md:right-12 -top-2 w-28 md:w-40 h-auto"
+        />
+        <div className="text-center space-y-2">
+          <p className="font-script text-2xl text-rose-dust text-outlined-ink">almost yours</p>
+          <h1 className="font-display text-5xl text-ink">Your Cart</h1>
+        </div>
       </section>
       <section className="container pb-24 max-w-3xl">
         {items.length === 0 ? (

@@ -1,7 +1,9 @@
 import Layout from "@/components/sash/Layout";
 import { Link, useNavigate } from "react-router-dom";
-import heroDream from "@/assets/hero-dreamscape.png";
 import kissesBg from "@/assets/kisses-bg.png";
+import stickerPinkDress from "@/assets/sticker-pink-dress.png";
+import stickerGownBow from "@/assets/sticker-gown-bow.png";
+import StickerCutout from "@/components/sash/StickerCutout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
@@ -86,7 +88,7 @@ export default function Home() {
         <div className="container relative z-10 grid lg:grid-cols-2 gap-12 items-center py-20 md:py-28">
           {/* LEFT — text */}
           <div className="space-y-6 animate-petal-in text-center lg:text-left">
-            <p className="font-script text-3xl md:text-4xl text-rose-dust">welcome, darling ♡</p>
+            <p className="font-script text-3xl md:text-4xl text-rose-dust text-outlined-ink">welcome, darling ♡</p>
             <h1 className="font-display text-7xl md:text-8xl leading-[0.9] text-ink font-bold">
               Sash<span className="text-rose-dust">&amp;</span>Co
             </h1>
@@ -106,11 +108,22 @@ export default function Home() {
             </div>
           </div>
 
-          {/* RIGHT — framed dreamscape, kept small so its baked-in text doesn't clash */}
-          <div className="relative mx-auto w-full max-w-md">
-            <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-soft border border-border bg-cream">
-              <img src={heroDream} alt="A dreamscape mood" className="w-full h-full object-cover photo-haze" />
-            </div>
+          {/* RIGHT — pasted-art sticker collage, no frame, stickers float on the page */}
+          <div className="relative mx-auto w-full max-w-md aspect-[4/5]">
+            <StickerCutout
+              src={stickerGownBow}
+              alt="Pink and black gown sketch sticker"
+              rotate={8}
+              borderWidth="thick"
+              className="absolute right-0 top-2 w-[68%] h-auto"
+            />
+            <StickerCutout
+              src={stickerPinkDress}
+              alt="Pink dress sketch sticker"
+              rotate={-7}
+              borderWidth="thick"
+              className="absolute left-0 bottom-0 w-[72%] h-auto"
+            />
             <span className="absolute -top-4 -right-4 text-3xl animate-shimmer">✦</span>
             <span className="absolute -bottom-4 -left-4 text-3xl animate-shimmer" style={{ animationDelay: "0.7s" }}>✦</span>
           </div>
@@ -120,7 +133,7 @@ export default function Home() {
       {/* ABOUT SASH & CO — what makes us different */}
       <section className="container py-24 space-y-12">
         <div className="text-center space-y-3 max-w-3xl mx-auto">
-          <p className="font-script text-3xl text-rose-dust">why we exist</p>
+          <p className="font-script text-3xl text-rose-dust text-outlined-ink">why we exist</p>
           <h2 className="font-display text-5xl md:text-6xl text-ink font-bold">About Sash<span className="text-rose-dust">&amp;</span>Co</h2>
           <p className="font-serif italic text-xl text-ink-soft text-balance pt-2">
             We're not a clothing store. We're a wardrobe of <em>selves</em>.
@@ -146,7 +159,7 @@ export default function Home() {
       {/* AESTHETICS preview */}
       <section className="container py-16 space-y-12">
         <div className="text-center space-y-3">
-          <p className="font-script text-2xl text-rose-dust">eighteen worlds</p>
+          <p className="font-script text-2xl text-rose-dust text-outlined-ink">eighteen worlds</p>
           <h2 className="font-display text-5xl text-ink font-bold">Choose your aesthetic.</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -177,8 +190,8 @@ export default function Home() {
         />
         <div className="container relative space-y-10 max-w-3xl">
           <div className="text-center space-y-3">
-            <p className="font-script text-3xl text-rose-dust">tell me everything</p>
-            <h2 className="font-display text-5xl md:text-6xl text-ink font-bold text-balance">
+            <p className="font-script text-3xl text-rose-dust text-outlined-ink">tell me everything</p>
+            <h2 className="font-display text-5xl md:text-6xl text-ink font-bold text-balance text-outlined-ink">
               what's your era right now, honey?
             </h2>
             <p className="font-serif italic text-xl text-ink-soft text-balance">
@@ -223,8 +236,8 @@ export default function Home() {
 
       {/* CTA */}
       <section className="container py-32 text-center space-y-6">
-        <p className="font-script text-2xl text-rose-dust">don't know your era yet?</p>
-        <h2 className="font-display text-5xl text-ink font-bold max-w-2xl mx-auto text-balance">Take the Style DNA quiz.</h2>
+        <p className="font-script text-2xl text-rose-dust text-outlined-ink">don't know your era yet?</p>
+        <h2 className="font-display text-5xl text-ink font-bold max-w-2xl mx-auto text-balance text-outlined-ink">Take the Style DNA quiz.</h2>
         <p className="font-serif italic text-xl text-ink-soft max-w-xl mx-auto">A few soft questions. One result you'll want to screenshot.</p>
         <Button asChild size="lg" className="rounded-full px-10 py-6 mt-4">
           <Link to="/for-you">Begin →</Link>
