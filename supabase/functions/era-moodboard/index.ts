@@ -90,10 +90,13 @@ Deno.serve(async (req) => {
     }
     const args = JSON.parse(toolCall.function.arguments);
 
-    // Build image URLs from Unsplash source (no API key required, free image proxy)
-    const images = (args.image_queries as string[]).map((q: string, i: number) =>
-      `https://source.unsplash.com/600x800/?${encodeURIComponent(q + ",fashion,editorial")}&sig=${Date.now() + i}`
-    );
+    // Build image URLs via loremflickr (keyless, reliable). source.unsplash.com is deprecated.
+    const images = (args.image_queries as string[]).map((q: string, i: number) => {
+      const tags = encodeURIComponent(
+        (q + " fashion editorial").toLowerCase().trim().replace(/\s+/g, ",")
+      );
+      return `https://loremflickr.com/600/800/${tags}?lock=${Date.now() + i}`;
+    });
 
     return new Response(JSON.stringify({
       prompt,
