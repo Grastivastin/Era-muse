@@ -211,11 +211,23 @@ export default function ForYou() {
                   {/* image grid */}
                   {(mb.images || mb.image_queries) && (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {((mb.images as string[]) || (mb.image_queries as string[]).map((q: string, i: number) =>
-                        `https://source.unsplash.com/600x800/?${encodeURIComponent(q + ",fashion,editorial")}&sig=${i}`
-                      )).slice(0, 4).map((src: string, i: number) => (
+                      {((mb.images as string[]) || (mb.image_queries as string[]).map((q: string, i: number) => {
+                        const tags = encodeURIComponent(
+                          (q + " fashion editorial").toLowerCase().trim().replace(/\s+/g, ",")
+                        );
+                        return `https://loremflickr.com/600/800/${tags}?lock=${i}`;
+                      })).slice(0, 4).map((src: string, i: number) => (
                         <div key={i} className="aspect-[3/4] rounded-2xl overflow-hidden bg-cream">
-                          <img src={src} alt="" loading="lazy" className="w-full h-full object-cover photo-haze" />
+                          <img
+                            src={src}
+                            alt=""
+                            loading="lazy"
+                            className="w-full h-full object-cover photo-haze"
+                            onError={(e) => {
+                              (e.currentTarget as HTMLImageElement).src =
+                                `https://picsum.photos/seed/${encodeURIComponent(mb.prompt + i)}/600/800`;
+                            }}
+                          />
                         </div>
                       ))}
                     </div>
