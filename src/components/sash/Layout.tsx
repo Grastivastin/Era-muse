@@ -1,8 +1,17 @@
 import { ReactNode } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Search } from "lucide-react";
 import kissesBg from "@/assets/kisses-bg.png";
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
+  const [q, setQ] = useState("");
+  const submitSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const term = q.trim();
+    navigate(term ? `/shop?q=${encodeURIComponent(term)}` : "/shop");
+  };
   return (
     <div className="min-h-screen flex flex-col relative">
       {/* Site-wide kisses background — soft ~22% opacity, fixed so it doesn't scroll */}
@@ -19,13 +28,14 @@ export default function Layout({ children }: { children: ReactNode }) {
         }}
       />
       <header className="sticky top-0 z-40 backdrop-blur-md bg-paper/85 border-b border-border">
-        <div className="container flex items-center justify-between py-5">
+        <div className="container flex items-center justify-between py-5 gap-4">
           <Link to="/" className="font-script text-3xl md:text-4xl font-bold text-ink drop-shadow-sm" style={{ textShadow: "0 1px 2px hsl(var(--rose-dust)/0.4)" }}>
             Sash<span className="text-rose-dust">&amp;</span>Co
           </Link>
-          <nav className="hidden md:flex gap-8 text-sm uppercase tracking-[0.2em] text-ink font-medium">
+          <nav className="hidden md:flex gap-6 text-sm uppercase tracking-[0.2em] text-ink font-medium">
             {[
               ["/", "Home"],
+              ["/shop", "Shop"],
               ["/aesthetics", "Aesthetics"],
               ["/for-you", "For You"],
               ["/wishlist", "Wishlist"],
@@ -36,6 +46,16 @@ export default function Layout({ children }: { children: ReactNode }) {
                 `story-link ${isActive ? "text-ink" : ""}`}>{label}</NavLink>
             ))}
           </nav>
+          <form onSubmit={submitSearch} className="hidden md:flex items-center gap-2 bg-paper/80 border border-border rounded-full px-3 py-1.5 w-56">
+            <Search className="h-4 w-4 text-ink-soft shrink-0" />
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="search pieces…"
+              className="bg-transparent outline-none text-sm text-ink placeholder:text-ink-soft w-full"
+              aria-label="Search"
+            />
+          </form>
         </div>
       </header>
       <main className="flex-1">{children}</main>
