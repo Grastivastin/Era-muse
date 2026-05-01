@@ -9,17 +9,17 @@ export default function About() {
       {/* HERO — Date with the Angels signage as the muse */}
       <section className="container pt-16 pb-12">
         <div className="grid lg:grid-cols-5 gap-10 items-center max-w-6xl mx-auto">
-          <div className="lg:col-span-3 space-y-5 text-center lg:text-left surface-paper p-8 md:p-10">
+          <div className="lg:col-span-3 space-y-5 text-center lg:text-left">
             <p className="font-script text-3xl text-rose-dust">our manifesto</p>
             <h1 className="font-display text-5xl md:text-6xl text-ink font-bold leading-tight">
               A love letter to <span className="text-rose-dust">getting dressed.</span>
             </h1>
-            <p className="font-serif italic text-xl text-ink leading-relaxed text-balance">
+            <p className="font-serif italic text-xl text-ink-soft text-balance">
               For the girl who picks a song before she picks a coat. Who curates a Pinterest board before she curates an outfit.
             </p>
           </div>
           <div className="lg:col-span-2 relative mx-auto w-full max-w-sm">
-            <div className="aspect-square rounded-[2rem] overflow-hidden shadow-soft border-2 border-ink/20 -rotate-3">
+            <div className="aspect-square rounded-[2rem] overflow-hidden shadow-soft border border-border">
               <img src={dateAngelsImg} alt="Date with the Angels — vintage signage muse" className="w-full h-full object-cover" />
             </div>
             <span className="absolute -top-3 -right-3 text-3xl animate-shimmer">✦</span>
@@ -87,11 +87,9 @@ export default function About() {
       </section>
 
       {/* CLOSING */}
-      <section className="container py-20 max-w-2xl mx-auto">
-        <div className="surface-paper p-8 text-center space-y-4">
-          <p className="font-script text-4xl text-rose-dust">welcome to your wardrobe of selves.</p>
-          <p className="font-script text-2xl text-rose-dust pt-4">— Sash &amp; Co</p>
-        </div>
+      <section className="container py-20 text-center space-y-4 max-w-2xl mx-auto">
+        <p className="font-script text-4xl text-rose-dust">welcome to your wardrobe of selves.</p>
+        <p className="font-script text-2xl text-rose-dust pt-4">— Sash &amp; Co</p>
       </section>
     </Layout>
   );

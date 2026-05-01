@@ -160,19 +160,19 @@ export default function ForYou() {
   return (
     <Layout>
       <section className="container py-12 md:py-16 space-y-12">
-        {/* Header — sticker on its own column, never colliding with the title */}
-        <div className="grid md:grid-cols-[auto,1fr] gap-6 md:gap-10 items-center max-w-4xl mx-auto">
+        {/* Header with pasted-art sticker */}
+        <div className="relative max-w-3xl mx-auto">
           <StickerCutout
             src={stickerBlondeBow}
             alt="Blonde in pink bow dress sketch sticker"
-            rotate={-7}
+            rotate={-9}
             borderWidth="thick"
-            className="w-32 md:w-44 mx-auto md:mx-0 shrink-0"
+            className="hidden sm:block absolute -left-4 md:-left-12 -top-6 w-32 md:w-44 h-auto"
           />
-          <div className="text-center md:text-left space-y-3 surface-paper p-6 md:p-8">
-            <p className="font-script text-3xl text-rose-dust">curated, just for you</p>
+          <div className="text-center space-y-3 px-2">
+            <p className="font-script text-3xl text-rose-dust text-outlined-ink">curated, just for you</p>
             <h1 className="font-display text-5xl md:text-6xl text-ink font-bold">For You.</h1>
-            <p className="font-serif text-lg text-ink leading-relaxed">
+            <p className="font-serif italic text-xl text-ink-soft text-balance">
               Everything below is shaped by your era, your DNA, and the moods you've whispered to Sage.
             </p>
           </div>
@@ -211,23 +211,11 @@ export default function ForYou() {
                   {/* image grid */}
                   {(mb.images || mb.image_queries) && (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {((mb.images as string[]) || (mb.image_queries as string[]).map((q: string, i: number) => {
-                        const tags = encodeURIComponent(
-                          (q + " fashion editorial").toLowerCase().trim().replace(/\s+/g, ",")
-                        );
-                        return `https://loremflickr.com/600/800/${tags}?lock=${i}`;
-                      })).slice(0, 4).map((src: string, i: number) => (
+                      {((mb.images as string[]) || (mb.image_queries as string[]).map((q: string, i: number) =>
+                        `https://source.unsplash.com/600x800/?${encodeURIComponent(q + ",fashion,editorial")}&sig=${i}`
+                      )).slice(0, 4).map((src: string, i: number) => (
                         <div key={i} className="aspect-[3/4] rounded-2xl overflow-hidden bg-cream">
-                          <img
-                            src={src}
-                            alt=""
-                            loading="lazy"
-                            className="w-full h-full object-cover photo-haze"
-                            onError={(e) => {
-                              (e.currentTarget as HTMLImageElement).src =
-                                `https://picsum.photos/seed/${encodeURIComponent(mb.prompt + i)}/600/800`;
-                            }}
-                          />
+                          <img src={src} alt="" loading="lazy" className="w-full h-full object-cover photo-haze" />
                         </div>
                       ))}
                     </div>

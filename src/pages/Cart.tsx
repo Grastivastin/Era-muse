@@ -109,19 +109,17 @@ export default function Cart() {
 
   return (
     <Layout>
-      <section className="container py-12 md:py-16">
-        <div className="grid md:grid-cols-[1fr,auto] gap-6 md:gap-10 items-center max-w-4xl mx-auto">
-          <div className="text-center md:text-left space-y-2 surface-paper p-6 md:p-8">
-            <p className="font-script text-2xl text-rose-dust">almost yours</p>
-            <h1 className="font-display text-5xl text-ink font-bold">Your Cart</h1>
-          </div>
-          <StickerCutout
-            src={stickerRuffleGown}
-            alt="Pink ruffle ball gown sketch sticker"
-            rotate={5}
-            borderWidth="thin"
-            className="w-28 md:w-40 mx-auto md:mx-0 shrink-0"
-          />
+      <section className="container py-16 relative">
+        <StickerCutout
+          src={stickerRuffleGown}
+          alt="Pink ruffle ball gown sketch sticker"
+          rotate={6}
+          borderWidth="thin"
+          className="hidden sm:block absolute right-4 md:right-12 -top-2 w-28 md:w-40 h-auto"
+        />
+        <div className="text-center space-y-2">
+          <p className="font-script text-2xl text-rose-dust text-outlined-ink">almost yours</p>
+          <h1 className="font-display text-5xl text-ink">Your Cart</h1>
         </div>
       </section>
       <section className="container pb-24 max-w-3xl">

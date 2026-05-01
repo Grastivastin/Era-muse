@@ -17,7 +17,6 @@ import Cart from "./pages/Cart";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import SharedDna from "./pages/SharedDna";
-import Shop from "./pages/Shop";
 
 const queryClient = new QueryClient();
 
@@ -35,7 +34,6 @@ const App = () => (
             <Route path="/" element={<Home />} />
             <Route path="/aesthetics" element={<Aesthetics />} />
             <Route path="/aesthetics/:id" element={<AestheticDetail />} />
-            <Route path="/shop" element={<Shop />} />
             <Route path="/for-you" element={<ForYou />} />
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/wishlist" element={<Wishlist />} />

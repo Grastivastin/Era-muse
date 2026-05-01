@@ -108,24 +108,24 @@ export default function Home() {
             </div>
           </div>
 
-          {/* RIGHT — pasted-art sticker collage. Two stickers, never overlap. */}
-          <div className="relative mx-auto w-full max-w-lg aspect-[5/4]">
-            <StickerCutout
-              src={stickerPinkDress}
-              alt="Pink dress sketch sticker"
-              rotate={-6}
-              borderWidth="thick"
-              className="absolute left-0 top-0 w-[46%]"
-            />
+          {/* RIGHT — pasted-art sticker collage, no frame, stickers float on the page */}
+          <div className="relative mx-auto w-full max-w-md aspect-[4/5]">
             <StickerCutout
               src={stickerGownBow}
               alt="Pink and black gown sketch sticker"
-              rotate={7}
+              rotate={8}
               borderWidth="thick"
-              className="absolute right-0 bottom-0 w-[52%]"
+              className="absolute right-0 top-2 w-[68%] h-auto"
             />
-            <span className="absolute top-0 right-2 text-3xl animate-shimmer">✦</span>
-            <span className="absolute bottom-0 left-2 text-3xl animate-shimmer" style={{ animationDelay: "0.7s" }}>✦</span>
+            <StickerCutout
+              src={stickerPinkDress}
+              alt="Pink dress sketch sticker"
+              rotate={-7}
+              borderWidth="thick"
+              className="absolute left-0 bottom-0 w-[72%] h-auto"
+            />
+            <span className="absolute -top-4 -right-4 text-3xl animate-shimmer">✦</span>
+            <span className="absolute -bottom-4 -left-4 text-3xl animate-shimmer" style={{ animationDelay: "0.7s" }}>✦</span>
           </div>
         </div>
       </section>

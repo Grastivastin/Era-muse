@@ -152,32 +152,17 @@
   /* Bold rose-dust pink text — readable over kisses background */
   .text-rose-dust {
     color: hsl(var(--rose-dust));
-    text-shadow:
-      0 0 1px hsl(var(--ink) / 0.9),
-      0 1px 0 hsl(var(--paper) / 0.9),
-      0 0 14px hsl(var(--rose-dust) / 0.35);
-    font-weight: 700;
-    -webkit-text-stroke: 1px hsl(var(--ink));
+    text-shadow: 0 1px 0 hsl(var(--paper) / 0.7), 0 0 12px hsl(var(--rose-dust) / 0.25);
+    font-weight: 600;
+    -webkit-text-stroke: 0.5px hsl(var(--ink));
     paint-order: stroke fill;
   }
 
   /* Outlined ink stroke for any heading that needs to read over busy backgrounds */
   .text-outlined-ink {
-    -webkit-text-stroke: 1.1px hsl(var(--ink));
+    -webkit-text-stroke: 0.7px hsl(var(--ink));
     paint-order: stroke fill;
-    text-shadow:
-      0 1px 0 hsl(var(--paper) / 0.95),
-      0 0 8px hsl(var(--paper) / 0.6);
-    font-weight: 700;
-  }
-
-  /* Frosted readable surface for hero/script blocks sitting on the kisses bg */
-  .surface-paper {
-    background: hsl(var(--paper) / 0.78);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid hsl(var(--border));
-    border-radius: 1.5rem;
+    text-shadow: 0 1px 0 hsl(var(--paper) / 0.85);
   }
 
   /* Aesthetic decorative border — soft scallops */
